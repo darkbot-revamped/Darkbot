@@ -18,6 +18,8 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,6 +32,8 @@ public class StatsManager implements Manager, StatsAPI, NativeUpdatable {
 
     private final Main main;
     private final EventBrokerAPI eventBroker;
+
+    private static StatsManager INSTANCE;
 
     private long address;
 
@@ -49,6 +53,7 @@ public class StatsManager implements Manager, StatsAPI, NativeUpdatable {
     public StatsManager(Main main, EventBrokerAPI eventBroker) {
         this.main = main;
         this.eventBroker = eventBroker;
+        INSTANCE = this;
 
         registerImpl(Stats.Bot.RUNTIME, runtime = createStat());
 
@@ -121,6 +126,14 @@ public class StatsManager implements Manager, StatsAPI, NativeUpdatable {
 
     private void registerImpl(Key key, StatImpl stat) {
         statistics.put(StatKey.of(key), stat);
+    }
+
+    public static Collection<? extends StatsAPI.Key> getStatKeys() {
+        return Collections.unmodifiableSet(getInstance().statistics.keySet());
+    }
+
+    public static StatsManager getInstance() {
+        return INSTANCE;
     }
 
     @Override

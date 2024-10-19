@@ -5,6 +5,7 @@ import com.github.manolo8.darkbot.core.itf.Manager;
 import com.github.manolo8.darkbot.core.itf.Updatable;
 import com.github.manolo8.darkbot.core.objects.facades.AssemblyMediator;
 import com.github.manolo8.darkbot.core.objects.facades.AstralGateProxy;
+import com.github.manolo8.darkbot.core.objects.facades.BattlePassMediator;
 import com.github.manolo8.darkbot.core.objects.facades.BoosterProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChatProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChrominProxy;
@@ -98,6 +99,7 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
         registerProxy("QuestProxy", QuestProxy.class);
         registerMediator("diminish_quests", DiminishQuestMediator.class);
         registerMediator("seasonPass", SeassonPassMediator.class);
+        registerMediator("battle_pass", BattlePassMediator.class);
 
         npcEvents.put(EventType.GENERIC, this.npcEventProxy = registerProxy("npc_event", NpcEventProxy.class));
         npcEvents.put(EventType.AGATUS, registerProxy("agatus_event", NpcEventProxy.class));
