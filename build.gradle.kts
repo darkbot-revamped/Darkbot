@@ -60,6 +60,8 @@ dependencies {
     api("com.formdev", "flatlaf-extras", flatLafVersion)
     api("org.jgrapht", "jgrapht-core", "1.5.2")
     api("it.unimi.dsi", "fastutil-core", "8.5.13")
+    api("org.jsoup","jsoup", "1.17.2")
+    api("us.codecraft", "xsoup", "0.3.7")
 
     // Testing stat time-series requires this
     //api("org.knowm.xchart", "xchart", "3.8.5")
