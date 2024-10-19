@@ -6,15 +6,19 @@ import com.github.manolo8.darkbot.config.actions.SyntaxException;
 import com.github.manolo8.darkbot.config.actions.Value;
 import com.github.manolo8.darkbot.config.actions.ValueData;
 import com.github.manolo8.darkbot.config.actions.parser.ParseUtil;
-import eu.darkbot.api.game.stats.Stats;
+import com.github.manolo8.darkbot.config.actions.parser.Values;
+import com.github.manolo8.darkbot.core.manager.StatsManager;
+
 import eu.darkbot.api.managers.StatsAPI;
+import eu.darkbot.api.managers.StatsAPI.Key;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
 @ValueData(name = "stat-type", description = "Gets a certain Stat type from a bot", example = "stat-type(experience, earned)")
 public class StatTypeValue implements Value<Number>, Parser {
-    private Stats.General key;
+    private StatsAPI.Key key;
     private StatsAPI.Stat stat;
     private StatData dataType;
 
@@ -35,11 +39,18 @@ public class StatTypeValue implements Value<Number>, Parser {
         }
     }
 
-    private Stats.General getKeyFromString(String key) {
-        for (Stats.General stat : Stats.General.values()) {
-            if (stat.name().equalsIgnoreCase(key)) return stat;
-        }
-        return null;
+    private StatsAPI.Key getKeyFromString(String token) {
+        String[] tokenParts = token.split(":");
+
+        String statNamespace = tokenParts.length == 3 ? tokenParts[0] : null;
+        String statCategory = tokenParts.length >= 2 ? tokenParts[tokenParts.length - 2] : null;
+        String statKey = tokenParts[tokenParts.length - 1];
+
+        return StatsManager.getStatKeys().stream()
+                .filter(s -> statNamespace == null || s.namespace().equalsIgnoreCase(statNamespace))
+                .filter(s -> statCategory == null || s.category().equalsIgnoreCase(statCategory))
+                .filter(s -> s.name().equalsIgnoreCase(statKey))
+                .findFirst().orElse(null);
     }
 
     public enum StatData {
@@ -56,7 +67,9 @@ public class StatTypeValue implements Value<Number>, Parser {
 
         public static StatData of(String sd) {
             for (StatData statData : StatData.values()) {
-                if (statData.toString().equalsIgnoreCase(sd)) return statData;
+                if (statData.toString().equalsIgnoreCase(sd)) {
+                    return statData;
+                }
             }
             return null;
         }
@@ -64,7 +77,12 @@ public class StatTypeValue implements Value<Number>, Parser {
 
     @Override
     public String toString() {
-        return "stat-type(" + key.name().toLowerCase(Locale.ROOT) + "," + dataType + ")";
+        return "stat-type(" + getKeyFormatted(key) + "," + dataType + ")";
+    }
+
+    private String getKeyFormatted(Key keyToFormat) {
+        return ((keyToFormat.namespace() != null ? keyToFormat.namespace() + ":" : "") + keyToFormat.category() + ":"
+                + keyToFormat.name()).toLowerCase(Locale.ROOT);
     }
 
     @Override
@@ -75,7 +93,10 @@ public class StatTypeValue implements Value<Number>, Parser {
         stat = null;
 
         if (key == null) {
-            throw new SyntaxException("Unknown stat-type: '" + params[0] + "'", str, Stats.General.class);
+            throw new SyntaxException("Unknown stat-type: '" + params[0] + "'", str, Values.getMeta(getClass()),
+                    StatsManager.getStatKeys().stream()
+                            .map(this::getKeyFormatted)
+                            .toArray(String[]::new));
         }
 
         params = ParseUtil.separate(params, getClass(), ",").split("\\)", 2);

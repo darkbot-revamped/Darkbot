@@ -18,6 +18,8 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -121,6 +123,10 @@ public class StatsManager implements Manager, StatsAPI, NativeUpdatable {
 
     private void registerImpl(Key key, StatImpl stat) {
         statistics.put(StatKey.of(key), stat);
+    }
+
+    public static Collection<? extends StatsAPI.Key> getStatKeys() {
+        return Collections.unmodifiableSet(Main.INSTANCE.statsManager.statistics.keySet());
     }
 
     @Override
