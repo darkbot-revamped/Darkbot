@@ -5,6 +5,7 @@ import com.github.manolo8.darkbot.core.itf.Manager;
 import com.github.manolo8.darkbot.core.itf.Updatable;
 import com.github.manolo8.darkbot.core.objects.facades.AssemblyMediator;
 import com.github.manolo8.darkbot.core.objects.facades.AstralGateProxy;
+import com.github.manolo8.darkbot.core.objects.facades.AstralGateSelectionProxy;
 import com.github.manolo8.darkbot.core.objects.facades.BoosterProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChatProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChrominProxy;
@@ -57,6 +58,7 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
     public final EternalBlacklightProxy blacklightGate;
     public final ChrominProxy chrominEvent;
     public final AstralGateProxy astralGate;
+    public final AstralGateSelectionProxy astralGateSelection;
     public final HighlightProxy highlight;
     public final SpaceMapWindowProxy spaceMapWindowProxy;
     public final GauntletPlutusProxy plutus;
@@ -82,6 +84,7 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
         this.blacklightGate = registerProxy("eternal_blacklight",     EternalBlacklightProxy.class);
         this.chrominEvent   = registerProxy("chrominEvent",           ChrominProxy.class);
         this.astralGate     = registerProxy("rogue_lite",             AstralGateProxy.class);
+        this.astralGateSelection = registerProxy("rogue_lite_selection",             AstralGateSelectionProxy.class);
         this.highlight      = registerProxy("HighlightProxy",         HighlightProxy.class);
         this.spaceMapWindowProxy = registerProxy("spacemap",          SpaceMapWindowProxy.class);
         this.plutus         = registerProxy("plutus",                 GauntletPlutusProxy.class);
