@@ -155,6 +155,7 @@ public class GuiManager implements Manager, GameScreenAPI {
         register("popup_generic_icon_ok", DispatchIconOkGui.class);
         this.assembly = register("assembly");
 
+        register("returnee_login", ReturneeManager.class);
         register("ggBuilder", GateSpinnerGui.class);
         register("diminish_quests", DiminishQuestGui.class);
         register("refinement_count");
