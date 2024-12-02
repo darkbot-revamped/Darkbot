@@ -18,6 +18,7 @@ import com.github.manolo8.darkbot.core.objects.gui.LogoutGui;
 import com.github.manolo8.darkbot.core.objects.gui.OreTradeGui;
 import com.github.manolo8.darkbot.core.objects.gui.RefinementGui;
 import com.github.manolo8.darkbot.core.objects.gui.SettingsGui;
+import com.github.manolo8.darkbot.core.objects.gui.ShipWarpGui;
 import com.github.manolo8.darkbot.core.objects.gui.TargetedOfferGui;
 import com.github.manolo8.darkbot.core.objects.swf.FlashMap;
 import eu.darkbot.api.PluginAPI;
@@ -69,6 +70,7 @@ public class GuiManager implements Manager, GameScreenAPI {
     public final GroupManager group;
     public final SettingsGui settingsGui;
     public final ChatGui chat;
+    public final ShipWarpGui shipWarpGui;
 
     public final Gui assembly;
 
@@ -148,6 +150,7 @@ public class GuiManager implements Manager, GameScreenAPI {
         this.refinement = register("refinement", RefinementGui.class);
         this.chat = register("chat", ChatGui.class);
         this.settingsGui = register("settings", SettingsGui.class);
+        this.shipWarpGui = register("ship_warp", ShipWarpGui.class);
 
         register("dispatch", DispatchManager.class);
         register("dispatch_popup_reward_list", DispatchPopupRewardGui.class);
