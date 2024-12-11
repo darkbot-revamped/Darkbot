@@ -60,22 +60,22 @@ public class LegacyHangarManager {
 
     public boolean changeHangar(String hangarId) {
         if (lastHangarChange > System.currentTimeMillis() || !backpageManager.sidStatus().contains("OK")) return false;
-
         try {
-            String token = backpageManager.getConnection("indexInternal.es", Method.GET)
-                    .setRawParam("action", "internalDock")
-                    .consumeInputStream(backpageManager::getReloadToken);
+            JsonObject paramObj = new JsonObject();
+            JsonObject hangarObj = new JsonObject();
 
-            if (token == null || token.isEmpty()) return false;
+            hangarObj.addProperty("hi", getActiveHangar());
+            hangarObj.addProperty("hangarId", hangarId);
 
-            return !backpageManager.getConnection("indexInternal.es", Method.GET, 2000)
+            paramObj.add("params", hangarObj);
+            
+            return backpageManager.getConnection("flashAPI/inventory.php", Method.POST, 2000)
                     .addSupplier(() -> this.lastHangarChange = System.currentTimeMillis() + 12_000)
-                    .setRawParam("action", "internalDock")
-                    .setRawParam("subAction", "changeHangar")
-                    .setRawParam("hangarId", hangarId)
-                    .setRawParam("reloadToken", token)
-                    .getContent().contains("\"type\":\"error\"");
-
+                    .setRawHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .setRawParam("action", "activateShip")
+                    .setParam("params", Base64Utils.encode(paramObj.toString()))
+                    .consumeInputStream(Base64Utils::decode)
+                    .contains("\"isError\":0");
         } catch (IOException e) {
             e.printStackTrace();
             this.lastHangarChange = System.currentTimeMillis() + 5_000;
