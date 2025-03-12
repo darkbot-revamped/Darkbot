@@ -22,8 +22,10 @@ import com.github.manolo8.darkbot.core.objects.facades.HighlightProxy;
 import com.github.manolo8.darkbot.core.objects.facades.InventoryProxy;
 import com.github.manolo8.darkbot.core.objects.facades.LogMediator;
 import com.github.manolo8.darkbot.core.objects.facades.NpcEventProxy;
-import com.github.manolo8.darkbot.core.objects.facades.SeassonPassMediator;
 import com.github.manolo8.darkbot.core.objects.facades.QuestProxy;
+import com.github.manolo8.darkbot.core.objects.facades.ReturneeCalendarProxy;
+import com.github.manolo8.darkbot.core.objects.facades.ReturneeLoginProxy;
+import com.github.manolo8.darkbot.core.objects.facades.SeassonPassMediator;
 import com.github.manolo8.darkbot.core.objects.facades.SettingsProxy;
 import com.github.manolo8.darkbot.core.objects.facades.SlotBarsProxy;
 import com.github.manolo8.darkbot.core.objects.facades.SpaceMapWindowProxy;
@@ -98,6 +100,8 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
         registerProxy("QuestProxy", QuestProxy.class);
         registerMediator("diminish_quests", DiminishQuestMediator.class);
         registerMediator("seasonPass", SeassonPassMediator.class);
+        registerProxy("returnee_login_overview", ReturneeLoginProxy.class);
+        registerProxy("returnee_login_calendar", ReturneeCalendarProxy.class);
 
         npcEvents.put(EventType.GENERIC, this.npcEventProxy = registerProxy("npc_event", NpcEventProxy.class));
         npcEvents.put(EventType.AGATUS, registerProxy("agatus_event", NpcEventProxy.class));
