@@ -204,8 +204,8 @@ public class HeroManager extends Player implements Manager, HeroAPI {
                 otherConfig ? (config.getConfiguration().ordinal() % 2) + 1 : config.getConfiguration().ordinal()
         );
 
-        SelectableItem.Formation formation = target.npcInfo.attackFormation != null ?
-                target.npcInfo.attackFormation :
+        SelectableItem.Formation formation = target.npcInfo.attackFormationNew != null ?
+                target.npcInfo.attackFormationNew :
                 config.getFormation();
 
         return setMode(new ShipMode.ShipModeImpl(newConfig, formation));

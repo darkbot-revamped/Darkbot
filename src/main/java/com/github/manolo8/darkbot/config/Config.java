@@ -412,42 +412,46 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
         private Integer CONFIG;
         private Character FORMATION;
 
-        private HeroAPI.Configuration configuration;
-        private SelectableItem.Formation formation;
+        private HeroAPI.Configuration newConfiguration;
+        private SelectableItem.Formation newFormation;
 
         public ConfigFormation(HeroAPI.Configuration configuration, SelectableItem.Formation formation) {
-            this.configuration = configuration;
-            this.formation = formation;
+            this.newConfiguration = configuration;
+            this.newFormation = formation;
         }
 
         @Override
         public HeroAPI.Configuration getConfiguration() {
             if (CONFIG != null) {
-                configuration = HeroAPI.Configuration.of(CONFIG);
+                newConfiguration = HeroAPI.Configuration.of(CONFIG);
                 CONFIG = null;
             }
-            return configuration != null ? configuration : HeroAPI.Configuration.FIRST;
+            return newConfiguration != null ? newConfiguration : HeroAPI.Configuration.FIRST;
         }
 
         @Override
         public SelectableItem.Formation getFormation() {
-            if (FORMATION == null) {
-                return formation;
-            }
-
-            // Attempt to find associated formation
-            Optional<SelectableItem.Formation> associatedFormation = ItemUtils
-                    .findAssociatedItem(ItemCategory.DRONE_FORMATIONS, FORMATION)
-                    .map(it -> SelectableItem.Formation.of(it.id));
-
-            if (associatedFormation.isPresent()) {
+            // Return existing new formation if available
+            if (newFormation != null) {
                 FORMATION = null;
-                formation = associatedFormation.get();
-            } else {
-                return SelectableItem.Formation.STANDARD;
+                return newFormation;
             }
 
-            return formation;
+            // Return default if no formation is set
+            if (FORMATION == null) {
+                return Optional.ofNullable(newFormation)
+                        .orElse(SelectableItem.Formation.STANDARD);
+            }
+
+            // Find and update formation
+            return ItemUtils.findAssociatedItem(ItemCategory.DRONE_FORMATIONS, FORMATION)
+                    .map(it -> SelectableItem.Formation.of(it.id))
+                    .map(formation -> {
+                        FORMATION = null;
+                        newFormation = formation;
+                        return formation;
+                    })
+                    .orElse(SelectableItem.Formation.STANDARD);
         }
 
         @Override
