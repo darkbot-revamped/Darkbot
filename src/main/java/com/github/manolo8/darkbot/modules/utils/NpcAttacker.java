@@ -62,7 +62,7 @@ public class NpcAttacker implements AttackAPI {
 
     protected boolean firstAttack; // If the initial attack was cast
 
-    protected Character lastShot;
+    protected SelectableItem.Laser lastShot;
 
     // This is now always unset, kept for plugin backwards compat
     protected @Deprecated boolean sab, rsb;
@@ -138,7 +138,7 @@ public class NpcAttacker implements AttackAPI {
         if (!firstAttack) {
             firstAttack = true;
             sendAttack(1500, 5000, true);
-        } else if (getPreviousAttackKey() != getAttackKey()) {
+        } else if (getPreviousAttackLaser() != getAttackLaser()) {
             sendAttack(250, 5000, true);
         } else if (!hero.isAttacking(target) || !hero.isAiming(target)) {
             sendAttack(1500, 5000, false);
@@ -153,7 +153,7 @@ public class NpcAttacker implements AttackAPI {
     private void sendAttack(long minWait, long bugTime, boolean normal) {
         laserTime = System.currentTimeMillis() + minWait;
         isAttacking = Math.max(isAttacking, laserTime + bugTime);
-        if (normal) API.keyboardClick(lastShot = getAttackKey());
+        if (normal) items.useItem(lastShot = getAttackLaser());
         else if (API.hasCapability(Capability.ALL_KEYBINDS_SUPPORT))
             keybinds.pressKeybind(ATTACK_LASER);
         else target.trySelect(true);
@@ -167,21 +167,20 @@ public class NpcAttacker implements AttackAPI {
         return radius + bar.findItemById("ability_zephyr_mmt").map(i -> i.quantity).orElse(0d) * 5;
     }
 
-    private Character getAttackKey() {
+    private SelectableItem.Laser getAttackLaser() {
         caller = this;
         SelectableItem.Laser laser = laserHandler.getBest();
         caller = null;
 
         if (laser != null) {
-            Character key = items.getKeyBind(laser);
-            if (key != null) return key;
+            return laser;
         }
 
-        return this.target == null || this.target.npcInfo.attackKey == null ?
-                main.config.LOOT.AMMO_KEY : this.target.npcInfo.attackKey;
+        return this.target == null || this.target.npcInfo.attackLaser == null ?
+                main.config.LOOT.LASER : this.target.npcInfo.attackLaser;
     }
 
-    private Character getPreviousAttackKey() {
+    private SelectableItem.Laser getPreviousAttackLaser() {
         return lastShot;
     }
 
@@ -224,7 +223,7 @@ public class NpcAttacker implements AttackAPI {
             laserTime = System.currentTimeMillis() + 1500;
             if (API.hasCapability(Capability.ALL_KEYBINDS_SUPPORT))
                 API.keyboardClick(keybinds.getCharCode(ATTACK_LASER));
-            else API.keyboardClick(getPreviousAttackKey());
+            else items.useItem(getPreviousAttackLaser());
         }
     }
 
@@ -310,8 +309,7 @@ public class NpcAttacker implements AttackAPI {
         @Override
         public SelectableItem.Laser get() {
             if (!shouldSab()) return null;
-            Item sab = items.getItem(main.config.LOOT.SAB.KEY);
-            return sab != null ? sab.getAs(SelectableItem.Laser.class) : null;
+            return SelectableItem.Laser.SAB_50;
         }
 
         private boolean shouldSab() {

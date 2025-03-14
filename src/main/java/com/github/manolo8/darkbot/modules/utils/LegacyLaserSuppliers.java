@@ -26,12 +26,12 @@ public class LegacyLaserSuppliers {
 
         private final HeroAPI hero;
         private final HeroItemsAPI items;
-        private final ConfigSetting<Character> ammoKey;
+        private final ConfigSetting<SelectableItem.Laser> ammoLaser;
 
         public DefaultLaserSupplier(HeroAPI hero, HeroItemsAPI items, ConfigAPI config) {
             this.hero = hero;
             this.items = items;
-            this.ammoKey = config.requireConfig("loot.ammo_key");
+            this.ammoLaser = config.requireConfig("loot.laser");
         }
 
         @Override
@@ -48,8 +48,7 @@ public class LegacyLaserSuppliers {
                 if (ammo.isPresent()) return ammo.get();
             }
 
-            Item i = items.getItem(ammoKey.getValue());
-            return i != null ? i.getAs(SelectableItem.Laser.class) : null;
+            return ammoLaser.getValue();
         }
     }
 
@@ -135,17 +134,14 @@ public class LegacyLaserSuppliers {
             Npc target = hero.getLocalTargetAs(Npc.class);
 
             Config.Loot.Sab SAB = sabSettings.getValue();
-            if (target == null || !SAB.ENABLED || SAB.KEY == null
+            if (target == null || !SAB.ENABLED
                     || target.getInfo().hasExtraFlag(NpcExtra.NO_SAB)
                     || hero.getHealth().shieldPercent() > SAB.PERCENT
                     || target.getHealth().getShield() <= SAB.NPC_AMOUNT
                     || (SAB.CONDITION != null && !SAB.CONDITION.get(main).toBoolean()))
                 return false;
 
-            Item i = heroItems.getItem(SAB.KEY);
-            laser = i != null ? i.getAs(SelectableItem.Laser.class) : null;
-
-            return laser != null && heroItems.getItem(i, ItemFlag.USABLE, ItemFlag.READY)
+            return heroItems.getItem(SelectableItem.Laser.SAB_50, ItemFlag.USABLE, ItemFlag.READY)
                     .filter(item -> item.getQuantity() > 50)
                     .isPresent();
         }

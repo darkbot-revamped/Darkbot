@@ -26,6 +26,8 @@ public class NpcInfo implements eu.darkbot.api.config.types.NpcInfo {
     public boolean kill;
     @Option("config.loot.npc_table.attack_key")
     public Character attackKey;
+    @Option("config.loot.npc_table.attack_laser")
+    public SelectableItem.Laser attackLaser;
     @Option("config.loot.npc_table.attack_formation")
     public Character attackFormation;
     public ExtraNpcInfo extra = new ExtraNpcInfo();

@@ -4,6 +4,7 @@ import com.github.manolo8.darkbot.config.actions.Condition;
 import com.github.manolo8.darkbot.config.types.suppliers.BrowserApi;
 import com.github.manolo8.darkbot.config.types.suppliers.DisplayFlag;
 import com.github.manolo8.darkbot.config.types.suppliers.LanguageSupplier;
+import com.github.manolo8.darkbot.config.types.suppliers.LaserSupplier;
 import com.github.manolo8.darkbot.config.types.suppliers.ModuleSupplier;
 import com.github.manolo8.darkbot.config.types.suppliers.PetGears;
 import com.github.manolo8.darkbot.config.types.suppliers.ReviveLocation;
@@ -25,6 +26,7 @@ import eu.darkbot.api.config.annotations.Table;
 import eu.darkbot.api.config.annotations.Tag;
 import eu.darkbot.api.config.annotations.Visibility;
 import eu.darkbot.api.config.annotations.Visibility.Level;
+import eu.darkbot.api.config.types.ShipMode;
 import eu.darkbot.api.game.enums.PetGear;
 import eu.darkbot.api.game.items.ItemCategory;
 import eu.darkbot.api.game.items.SelectableItem;
@@ -152,7 +154,9 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
             public @Option Character KEY = '3';
             public @Deprecated int AMMO_REFRESH = 3500;
         }
-        public @Option Character AMMO_KEY = '1';
+
+        public @Option.Ignore Character AMMO_KEY = '1';
+        public @Option @Dropdown(options = LaserSupplier.class) SelectableItem.Laser LASER = SelectableItem.Laser.LCB_10;
         public @Option @Visibility(Level.INTERMEDIATE) Character SHIP_ABILITY;
         public @Option @Visibility(Level.INTERMEDIATE) @Number(min = 50_000, max = 5_000_000, step = 50_000) int SHIP_ABILITY_MIN = 150_000;
         public @Option @Visibility(Level.ADVANCED) @Number(max = 10, step = 1) int MAX_CIRCLE_ITERATIONS = 5;
@@ -176,10 +180,13 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
     }
 
     public @Option GroupSettings GROUP = new GroupSettings();
+
     public static class GroupSettings {
         public @Option boolean ACCEPT_INVITES = false;
-        public @Option @Tag(Tag.Default.ALL) PlayerTag WHITELIST_TAG = null;
-        public @Option @Tag(Tag.Default.NONE) PlayerTag INVITE_TAG = null;
+        public @Option
+        @Tag(Tag.Default.ALL) PlayerTag WHITELIST_TAG = null;
+        public @Option
+        @Tag(Tag.Default.NONE) PlayerTag INVITE_TAG = null;
         public @Option boolean OPEN_INVITES = false;
         public @Option boolean BLOCK_INVITES = false;
         public @Option boolean LEAVE_NO_WHITELISTED = false;
@@ -207,15 +214,26 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
     }
 
     public @Option BotSettings BOT_SETTINGS = new BotSettings();
+
     public static class BotSettings {
         public @Option BotGui BOT_GUI = new BotGui();
-        public static class BotGui {
-            @Option @Dropdown(options = LanguageSupplier.class)
-            public Locale LOCALE = new Locale(Locale.getDefault().getLanguage());
 
-            public @Option @Visibility(Level.INTERMEDIATE) boolean CONFIRM_EXIT = true;
-            public @Option @Visibility(Level.INTERMEDIATE) boolean SAVE_GUI_POS = false;
-            public @Option @Visibility(Level.ADVANCED) @Number(min = 1, max = 20, step = 1) int BUTTON_SIZE = 4;
+        public static class BotGui {
+            @Option
+            @Dropdown(options = LanguageSupplier.class)
+            public Locale LOCALE = new Locale(Locale.getDefault().getLanguage());
+            @Option
+            @Dropdown(multi = true)
+            public Set<SelectableItem.Laser> LASER = EnumSet.of(SelectableItem.Laser.LCB_10, SelectableItem.Laser.MCB_25,
+                    SelectableItem.Laser.MCB_50, SelectableItem.Laser.UCB_100,
+                    SelectableItem.Laser.RSB_75, SelectableItem.Laser.A_BL, SelectableItem.Laser.JOB_100);
+            public @Option
+            @Visibility(Level.INTERMEDIATE) boolean CONFIRM_EXIT = true;
+            public @Option
+            @Visibility(Level.INTERMEDIATE) boolean SAVE_GUI_POS = false;
+            public @Option
+            @Visibility(Level.ADVANCED)
+            @Number(min = 1, max = 20, step = 1) int BUTTON_SIZE = 4;
 
             public boolean ALWAYS_ON_TOP = true; // No @Option. Edited via button
             public WindowPosition MAIN_GUI_WINDOW = new WindowPosition();

@@ -86,19 +86,19 @@ public class GuiManager implements Manager, GameScreenAPI {
         CLICKING_ONE(gm -> {
             if (gm.loggedInTimer.getRemainingFuse() > 13000) return false;
             Character keyBind = gm.main.facadeManager.slotBars.getKeyBind(gm.main.hero.getFormation());
-            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
+//            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
             return true;
         }),
         CLICKING_TWO(gm -> {
             if (gm.loggedInTimer.getRemainingFuse() > 12000) return false;
             Character keyBind = gm.main.facadeManager.slotBars.getKeyBind(gm.main.hero.getFormation());
-            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
+//            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
             return true;
         }),
         CLICKING_THREE(gm -> {
             if (gm.loggedInTimer.getRemainingFuse() > 11000) return false;
             Character keyBind = gm.main.facadeManager.slotBars.getKeyBind(gm.main.hero.getFormation());
-            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
+//            API.keyboardClick(keyBind == null ? gm.main.config.LOOT.AMMO_KEY : keyBind, false);
             return true;
         }),
         DONE(q -> false);

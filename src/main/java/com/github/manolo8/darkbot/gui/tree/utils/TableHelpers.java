@@ -4,8 +4,10 @@ import com.github.manolo8.darkbot.config.BoxInfo;
 import com.github.manolo8.darkbot.config.NpcInfo;
 import com.github.manolo8.darkbot.gui.utils.MultiTableRowSorter;
 import com.github.manolo8.darkbot.gui.utils.table.ExtraNpcInfoEditor;
+import com.github.manolo8.darkbot.gui.utils.table.LaserNpcInfoEditor;
 import eu.darkbot.api.config.ConfigSetting;
 import eu.darkbot.api.config.annotations.Table;
+import eu.darkbot.api.game.items.SelectableItem;
 import eu.darkbot.api.managers.ConfigAPI;
 import eu.darkbot.api.managers.StarSystemAPI;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +78,7 @@ public class TableHelpers {
                     new RowSorter.SortKey(2, SortOrder.ASCENDING),
                     new RowSorter.SortKey(0, SortOrder.DESCENDING)));
 
+            jTable.setDefaultEditor(SelectableItem.Laser.class, new LaserNpcInfoEditor());
             jTable.setDefaultEditor(NpcInfo.ExtraNpcInfo.class, new ExtraNpcInfoEditor());
         }
     }
