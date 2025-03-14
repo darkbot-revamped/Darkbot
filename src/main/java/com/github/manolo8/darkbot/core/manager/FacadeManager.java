@@ -5,6 +5,7 @@ import com.github.manolo8.darkbot.core.itf.Manager;
 import com.github.manolo8.darkbot.core.itf.Updatable;
 import com.github.manolo8.darkbot.core.objects.facades.AssemblyMediator;
 import com.github.manolo8.darkbot.core.objects.facades.AstralGateProxy;
+import com.github.manolo8.darkbot.core.objects.facades.BonusCalendarProxy;
 import com.github.manolo8.darkbot.core.objects.facades.BoosterProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChatProxy;
 import com.github.manolo8.darkbot.core.objects.facades.ChrominProxy;
@@ -22,8 +23,8 @@ import com.github.manolo8.darkbot.core.objects.facades.HighlightProxy;
 import com.github.manolo8.darkbot.core.objects.facades.InventoryProxy;
 import com.github.manolo8.darkbot.core.objects.facades.LogMediator;
 import com.github.manolo8.darkbot.core.objects.facades.NpcEventProxy;
-import com.github.manolo8.darkbot.core.objects.facades.SeassonPassMediator;
 import com.github.manolo8.darkbot.core.objects.facades.QuestProxy;
+import com.github.manolo8.darkbot.core.objects.facades.SeassonPassMediator;
 import com.github.manolo8.darkbot.core.objects.facades.SettingsProxy;
 import com.github.manolo8.darkbot.core.objects.facades.SlotBarsProxy;
 import com.github.manolo8.darkbot.core.objects.facades.SpaceMapWindowProxy;
@@ -64,6 +65,7 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
     public final WorldBossOverviewProxy worldBossOverview;
     public final Updatable group;
     public final Updatable groupMediator;
+    public final BonusCalendarProxy bonusCalendarProxy;
 
     private final Map<EventType, NpcEventProxy> npcEvents = new HashMap<>();
 
@@ -88,6 +90,7 @@ public class FacadeManager implements Manager, eu.darkbot.api.API.Singleton, Npc
         this.worldBossOverview = registerProxy("worldBoss_overview",  WorldBossOverviewProxy.class);
         this.group          = registerProxy("GroupProxy",             Updatable.NoOp.class);
         this.groupMediator  = registerMediator("GroupSystemMediator", Updatable.NoOp.class);
+        this.bonusCalendarProxy = registerProxy("miniclient_reward",      BonusCalendarProxy.class);
 
         registerProxy("dispatch", DispatchProxy.class);
         registerProxy("dispatch_retriever", DispatchRetrieverProxy.class);

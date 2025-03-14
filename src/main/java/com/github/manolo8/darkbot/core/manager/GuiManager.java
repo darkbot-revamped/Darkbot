@@ -69,6 +69,7 @@ public class GuiManager implements Manager, GameScreenAPI {
     public final GroupManager group;
     public final SettingsGui settingsGui;
     public final ChatGui chat;
+    public final Gui bonusCalendar;
 
     public final Gui assembly;
 
@@ -148,6 +149,7 @@ public class GuiManager implements Manager, GameScreenAPI {
         this.refinement = register("refinement", RefinementGui.class);
         this.chat = register("chat", ChatGui.class);
         this.settingsGui = register("settings", SettingsGui.class);
+        this.bonusCalendar = register("miniclient_reward");
 
         register("dispatch", DispatchManager.class);
         register("dispatch_popup_reward_list", DispatchPopupRewardGui.class);
