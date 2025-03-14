@@ -50,7 +50,7 @@ dependencies {
     val flatLafVersion = "3.4"
 
     // use this if you want to use local(mavenLocal) darkbot API
-    //api("eu.darkbot", "darkbot-impl", apiVersion)
+//    api("eu.darkbot", "darkbot-impl", apiVersion)
     api("eu.darkbot.DarkBotAPI", "darkbot-impl", apiVersion)
 
     // have to keep version 2.8.9, in newer versions GSON calls `toString` of config enums upon creation
