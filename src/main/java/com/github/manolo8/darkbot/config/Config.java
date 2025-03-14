@@ -25,6 +25,7 @@ import eu.darkbot.api.config.annotations.Table;
 import eu.darkbot.api.config.annotations.Tag;
 import eu.darkbot.api.config.annotations.Visibility;
 import eu.darkbot.api.config.annotations.Visibility.Level;
+import eu.darkbot.api.config.types.ShipMode;
 import eu.darkbot.api.game.enums.PetGear;
 import eu.darkbot.api.game.items.ItemCategory;
 import eu.darkbot.api.game.items.SelectableItem;
@@ -80,16 +81,16 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
         @Option @Dropdown(options = ModuleSupplier.class)
         public String CURRENT_MODULE = LootCollectorModule.class.getCanonicalName();
         public @Option @Dropdown(options = StarManager.MapOptions.class) int WORKING_MAP = 26;
-        public @Option ShipConfig OFFENSIVE = new ShipConfig(1, '8');
-        public @Option ShipConfig ROAM = new ShipConfig(1, '9');
-        public @Option ShipConfig RUN = new ShipConfig(2, '9');
+        public @Option ShipMode.ShipModeImpl OFFENSIVE = new ShipMode.ShipModeImpl(HeroAPI.Configuration.FIRST, SelectableItem.Formation.STANDARD);
+        public @Option ShipMode.ShipModeImpl ROAM = new ShipMode.ShipModeImpl(HeroAPI.Configuration.SECOND, SelectableItem.Formation.STANDARD);
+        public @Option ShipMode.ShipModeImpl RUN = new ShipMode.ShipModeImpl(HeroAPI.Configuration.SECOND, SelectableItem.Formation.STANDARD);
 
         public @Option Safety SAFETY = new Safety();
         public static class Safety {
             public @Option PercentRange REPAIR_HP_RANGE = new PercentRange(0.4, 0.95);
             public @Option @Percentage double REPAIR_HP_NO_NPC = 0.5;
             public @Option @Percentage double REPAIR_TO_SHIELD = 1;
-            public @Option ShipConfig REPAIR = new ShipConfig(1, '9');
+            public @Option ShipMode.ShipModeImpl REPAIR = new ShipMode.ShipModeImpl(HeroAPI.Configuration.SECOND, SelectableItem.Formation.STANDARD);
             public @Option @Number(min = 1, max = 9999) @Number.Disabled(value = -1, def = 10) int MAX_DEATHS = 10;
             @Deprecated
             public long REVIVE_LOCATION = 1L;
@@ -308,6 +309,7 @@ public class Config implements eu.darkbot.api.config.legacy.Config {
         public transient Lazy<String> MODIFIED_ACTIONS = new Lazy.NoCache<>();
     }
 
+    @Deprecated
     public static class ShipConfig implements LegacyShipMode {
         public int CONFIG = 1;
         public Character FORMATION;

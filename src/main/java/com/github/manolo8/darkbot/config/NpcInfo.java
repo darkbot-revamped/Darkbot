@@ -27,7 +27,7 @@ public class NpcInfo implements eu.darkbot.api.config.types.NpcInfo {
     @Option("config.loot.npc_table.attack_key")
     public Character attackKey;
     @Option("config.loot.npc_table.attack_formation")
-    public Character attackFormation;
+    public SelectableItem.Formation attackFormation = SelectableItem.Formation.STANDARD;
     public ExtraNpcInfo extra = new ExtraNpcInfo();
 
     public transient String name;
@@ -54,7 +54,7 @@ public class NpcInfo implements eu.darkbot.api.config.types.NpcInfo {
         set(radius, priority, kill, attackKey, null, extra);
     }
 
-    public void set(Double radius, Integer priority, Boolean kill, Character attackKey, Character attackFormation, ExtraNpcInfo extra) {
+    public void set(Double radius, Integer priority, Boolean kill, Character attackKey, SelectableItem.Formation attackFormation, ExtraNpcInfo extra) {
         if (radius != null) this.radius = radius;
         if (priority != null) this.priority = priority;
         if (kill != null) this.kill = kill;
@@ -109,7 +109,7 @@ public class NpcInfo implements eu.darkbot.api.config.types.NpcInfo {
 
     @Override
     public Optional<SelectableItem.Formation> getFormation() {
-        return getHeroItems().getItem(attackFormation, ItemCategory.DRONE_FORMATIONS, SelectableItem.Formation.class);
+        return Optional.of(attackFormation);
     }
 
     private static HeroItemsAPI getHeroItems() {
